@@ -1113,6 +1113,17 @@ body {
     margin-left: 8px;
   }
 
+  /* Language switcher in mobile menu */
+  .header-nav .lang-switcher {
+    align-self: center;
+    margin-top: 8px;
+  }
+
+  /* Prevent gray background on language switcher container */
+  .lang-switcher:hover {
+    background: var(--color-bg-secondary);
+  }
+
   .main-content {
     padding: 20px 16px;
   }
