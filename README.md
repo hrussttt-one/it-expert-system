@@ -44,6 +44,21 @@ npm run dev
    - `supabase/schema.sql` — створення таблиць
    - `supabase/seed.sql` — наповнення бази знань (стратегії, правила, приклади проєктів)
 
+### ⚠️ Важливо: Вимкнення RLS для прототипу
+
+Для коректної роботи прототипу виконайте в SQL Editor:
+
+```sql
+ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE projects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE analyses DISABLE ROW LEVEL SECURITY;
+ALTER TABLE strategies DISABLE ROW LEVEL SECURITY;
+ALTER TABLE knowledge_projects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE strategy_rules DISABLE ROW LEVEL SECURITY;
+```
+
+> **Примітка**: У production-версії замість вимкнення RLS потрібно налаштувати правильні політики доступу.
+
 ## Структура проєкту
 
 ```
@@ -75,6 +90,11 @@ supabase/
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
+
+## Версії
+
+- **v1.0-stable** — Стабільна версія з чистим AuthContext, працюючим auth flow
+- **GitHub**: [hrussttt-one/it-expert-system](https://github.com/hrussttt-one/it-expert-system)
 
 ## Ліцензія
 
