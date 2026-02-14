@@ -18,7 +18,10 @@ export default function KnowledgeBasePage() {
         try {
             const { data, error } = await supabase
                 .from('knowledge_projects')
-                .select('*')
+                .select(`
+                    *,
+                    strategy:strategies(name)
+                `)
                 .order('name', { ascending: true });
 
             if (error) throw error;
@@ -113,7 +116,7 @@ export default function KnowledgeBasePage() {
                                 </div>
                                 <div className="meta-item">
                                     <span className="meta-label">{t('knowledge.strategy')}</span>
-                                    <span className="meta-value">{project.strategy_used}</span>
+                                    <span className="meta-value">{project.strategy?.name || '—'}</span>
                                 </div>
                                 <div className="meta-item">
                                     <span className="meta-label">{t('knowledge.outcome')}</span>

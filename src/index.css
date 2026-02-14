@@ -134,6 +134,7 @@ body {
   color: var(--color-accent);
   background: var(--color-accent-light);
   font-weight: 500;
+  margin: 0 4px;
 }
 
 /* Add project button (+ icon in circle) */
