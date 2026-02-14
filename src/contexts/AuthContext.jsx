@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext({});
@@ -9,147 +9,64 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const mountedRef = useRef(true);
-  const profileCacheRef = useRef(null);
 
-  // Force clear all Supabase session data from localStorage
-  const clearSession = useCallback(() => {
-    setUser(null);
-    setProfile(null);
-    profileCacheRef.current = null;
-    // Remove all Supabase auth keys from localStorage
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('sb-') || key.includes('supabase')) {
-        localStorage.removeItem(key);
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
       }
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const fetchProfile = useCallback(async (userId) => {
-    // Skip if we already have this profile cached
-    if (profileCacheRef.current?.id === userId) {
-      setProfile(profileCacheRef.current);
-      return true;
-    }
-
+  const fetchProfile = async (userId) => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        return false;
-      }
-
-      profileCacheRef.current = data;
       setProfile(data);
-      return true;
-    } catch {
-      return false;
+    } catch (error) {
+      // Profile fetch failed - this is OK, user can still be logged in
+      setProfile(null);
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    mountedRef.current = true;
+  const signIn = async (email, password) => {
+    return await supabase.auth.signInWithPassword({ email, password });
+  };
 
-    const initAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setProfile(null);
+  };
 
-        if (!mountedRef.current) return;
-
-        if (error || !session?.user) {
-          // No valid session — clear everything and go to login
-          setUser(null);
-          setProfile(null);
-          setLoading(false);
-          return;
-        }
-
-        // Session exists — set user immediately
-        setUser(session.user);
-
-        // Try to fetch profile, but don't fail if it doesn't work
-        await fetchProfile(session.user.id);
-
-        if (!mountedRef.current) return;
-        setLoading(false);
-      } catch {
-        // Auth init failed — clear session silently
-        if (mountedRef.current) {
-          setUser(null);
-          setProfile(null);
-          setLoading(false);
-        }
-      }
-    };
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (!mountedRef.current) return;
-
-        if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
-          clearSession();
-          setLoading(false);
-          return;
-        }
-
-        if (event === 'TOKEN_REFRESHED' && !session) {
-          clearSession();
-          setLoading(false);
-          return;
-        }
-
-        if (session?.user) {
-          setUser(session.user);
-          await fetchProfile(session.user.id);
-          if (!mountedRef.current) return;
-          setLoading(false);
-        }
-      }
-    );
-
-    initAuth();
-
-    const timeout = setTimeout(() => {
-      if (mountedRef.current && loading) {
-        setLoading(false);
-      }
-    }, 5000);
-
-    return () => {
-      mountedRef.current = false;
-      subscription.unsubscribe();
-      clearTimeout(timeout);
-    };
-  }, [fetchProfile, clearSession]);
-
-  const signIn = useCallback(async (email, password) => {
-    // Clear any stale session data before attempting login
-    profileCacheRef.current = null;
-    const result = await supabase.auth.signInWithPassword({ email, password });
-    return result;
-  }, []);
-
-  const signOut = useCallback(async () => {
-    try {
-      await supabase.auth.signOut();
-    } catch {
-      // signOut can fail if session is already expired — that's OK
-    }
-    clearSession();
-  }, [clearSession]);
-
-  const value = useMemo(() => ({
+  const value = {
     user,
     profile,
     loading,
     signIn,
     signOut,
     isAdmin: profile?.role === 'admin',
-  }), [user, profile, loading, signIn, signOut]);
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
