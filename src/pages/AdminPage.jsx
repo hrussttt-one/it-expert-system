@@ -34,6 +34,7 @@ export default function AdminPage() {
         setError('');
 
         // Create a temporary client to avoid logging out the admin
+        // We MUST use a custom storage to prevent overwriting the main client's session in localStorage
         const tempClient = createClient(
             import.meta.env.VITE_SUPABASE_URL,
             import.meta.env.VITE_SUPABASE_ANON_KEY,
@@ -41,7 +42,12 @@ export default function AdminPage() {
                 auth: {
                     persistSession: false,
                     autoRefreshToken: false,
-                    detectSessionInUrl: false
+                    detectSessionInUrl: false,
+                    storage: {
+                        getItem: () => null,
+                        setItem: () => { },
+                        removeItem: () => { },
+                    }
                 }
             }
         );

@@ -19,26 +19,37 @@ export default function DashboardPage() {
     const fetchProjects = async () => {
         if (!user) return;
 
-        // Check if user is admin via profile
-        // Note: Since RLS is disabled, we must manually filter for non-admins
-        const { data: userProfile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', user.id)
-            .single();
+        try {
+            // Check if user is admin via profile
+            // Note: Since RLS is disabled, we must manually filter for non-admins
+            const { data: userProfile, error: profileError } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', user.id)
+                .maybeSingle();
 
-        let query = supabase
-            .from('projects')
-            .select('*')
-            .order('created_at', { ascending: false });
+            if (profileError) {
+                console.error('Profile fetch error:', profileError);
+            }
 
-        if (userProfile?.role !== 'admin') {
-            query = query.eq('user_id', user.id);
+            let query = supabase
+                .from('projects')
+                .select('*') // Join not strictly needed unless we display owner info
+                .order('created_at', { ascending: false });
+
+            if (userProfile?.role !== 'admin') {
+                query = query.eq('user_id', user.id);
+            }
+
+            const { data, error } = await query;
+
+            if (error) throw error;
+            setProjects(data || []);
+        } catch (err) {
+            console.error('Error fetching projects:', err);
+        } finally {
+            setLoading(false);
         }
-
-        const { data } = await query;
-        setProjects(data || []);
-        setLoading(false);
     };
 
     const deleteProject = async (id, e) => {
