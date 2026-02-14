@@ -2,7 +2,8 @@
   "nav": {
     "dashboard": "Dashboard",
     "newProject": "New Project",
-    "admin": "Admin Panel",
+    "admin": "Users",
+    "knowledge": "Knowledge Base",
     "logout": "Log Out",
     "language": "Language"
   },
@@ -143,6 +144,18 @@
     "credentialsSubtitle": "Copy these credentials to share with the new user. They will not be shown again.",
     "copy": "Copy Credentials",
     "copied": "Copied to clipboard"
+  },
+  "knowledge": {
+    "title": "Knowledge Base",
+    "subtitle": "Projects and strategies from the system knowledge base",
+    "noProjects": "Knowledge base is empty",
+    "projectName": "Project Name",
+    "strategy": "Strategy",
+    "outcome": "Outcome",
+    "successRate": "Success Rate",
+    "editProject": "Edit Project",
+    "deleteProject": "Delete Project",
+    "deleteConfirm": "Are you sure you want to delete this project from the knowledge base?"
   },
   "common": {
     "loading": "Loading...",

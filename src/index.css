@@ -136,6 +136,54 @@ body {
   font-weight: 500;
 }
 
+/* Add project button (+ icon in circle) */
+.add-project-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent) !important;
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+.add-project-btn:hover {
+  background: var(--color-accent-hover) !important;
+  transform: scale(1.05);
+}
+
+.add-project-btn svg {
+  flex-shrink: 0;
+}
+
+/* Logout button (semi-red badge) */
+.logout-btn {
+  background: var(--color-danger-light) !important;
+  color: var(--color-danger) !important;
+  font-weight: 500;
+}
+
+.logout-btn:hover {
+  background: var(--color-danger) !important;
+  color: #fff !important;
+}
+
+/* Hamburger menu button (mobile only) */
+.hamburger-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  align-items: center;
+  justify-content: center;
+}
+
 .lang-switcher {
   display: flex;
   align-items: center;
@@ -480,6 +528,67 @@ body {
   align-items: center;
   gap: 4px;
 }
+
+/* ============ KNOWLEDGE BASE ============ */
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.knowledge-card {
+  padding: 20px;
+}
+
+.knowledge-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.knowledge-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.knowledge-description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.knowledge-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meta-value {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
 
 .project-actions {
   display: flex;
@@ -957,14 +1066,49 @@ body {
     gap: 12px;
   }
 
+  /* Show hamburger, hide nav by default */
+  .hamburger-btn {
+    display: flex;
+  }
+
   .header-nav {
-    gap: 4px;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px;
+    display: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  .header-nav.mobile-open {
+    display: flex;
   }
 
   .header-nav a,
   .header-nav button {
-    font-size: 0.75rem;
-    padding: 6px 10px;
+    font-size: 0.875rem;
+    padding: 12px 16px;
+    text-align: left;
+    justify-content: flex-start;
+    border-radius: var(--radius-md);
+  }
+
+  .add-project-btn {
+    width: auto;
+    border-radius: var(--radius-md) !important;
+    justify-content: flex-start;
+    padding: 12px 16px !important;
+  }
+
+  .add-project-btn::after {
+    content: attr(title);
+    margin-left: 8px;
   }
 
   .main-content {
