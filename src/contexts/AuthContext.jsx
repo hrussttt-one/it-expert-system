@@ -53,6 +53,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     mountedRef.current = true;
+    profileCacheRef.current = null; // Clear cache on mount to prevent stale data
 
     const initAuth = async () => {
       try {
@@ -108,13 +109,16 @@ export function AuthProvider({ children }) {
         }
 
         if (session?.user) {
-          setUser(session.user);
           const profileOk = await fetchProfile(session.user.id);
           if (!mountedRef.current) return;
 
           if (!profileOk) {
             clearSession();
+            setLoading(false);
+            return;
           }
+
+          setUser(session.user);
           setLoading(false);
         }
       }
