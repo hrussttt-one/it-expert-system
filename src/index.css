@@ -294,6 +294,10 @@ body {
   height: 36px;
   padding: 0;
   border-radius: var(--radius-sm);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-sm {
@@ -304,6 +308,19 @@ body {
 .btn-lg {
   font-size: 1rem;
   padding: 14px 28px;
+}
+
+/* ============ WELCOME BANNER ============ */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--color-accent-light) 0%, rgba(0, 113, 227, 0.03) 100%);
+  border: 1px solid rgba(0, 113, 227, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ============ FORMS ============ */
@@ -865,12 +882,19 @@ body {
 
 /* ============ ANIMATIONS ============ */
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -878,6 +902,7 @@ body {
     opacity: 0;
     transform: translateY(20px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -889,6 +914,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -899,11 +925,25 @@ body {
   animation: fadeInUp 0.4s ease both;
 }
 
-.animate-in:nth-child(1) { animation-delay: 0.05s; }
-.animate-in:nth-child(2) { animation-delay: 0.1s; }
-.animate-in:nth-child(3) { animation-delay: 0.15s; }
-.animate-in:nth-child(4) { animation-delay: 0.2s; }
-.animate-in:nth-child(5) { animation-delay: 0.25s; }
+.animate-in:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.animate-in:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.animate-in:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.animate-in:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.animate-in:nth-child(5) {
+  animation-delay: 0.25s;
+}
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 768px) {
@@ -979,9 +1019,17 @@ body {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.progress-fill.success { background: var(--color-success); }
-.progress-fill.warning { background: var(--color-warning); }
-.progress-fill.danger { background: var(--color-danger); }
+.progress-fill.success {
+  background: var(--color-success);
+}
+
+.progress-fill.warning {
+  background: var(--color-warning);
+}
+
+.progress-fill.danger {
+  background: var(--color-danger);
+}
 
 /* ============ NO ANALYSIS PROMPT ============ */
 .no-analysis {
