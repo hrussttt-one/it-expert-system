@@ -67,16 +67,20 @@ export function AuthProvider({ children }) {
           return;
         }
 
-        // Session exists — verify it's still valid by fetching profile
-        setUser(session.user);
+        // Session exists — verify it's still valid by fetching profile FIRST
         const profileOk = await fetchProfile(session.user.id);
 
         if (!mountedRef.current) return;
 
         if (!profileOk) {
+          // Profile fetch failed — session is invalid
           clearSession();
+          setLoading(false);
+          return;
         }
 
+        // Only set user if profile loaded successfully
+        setUser(session.user);
         setLoading(false);
       } catch {
         // Auth init failed — clear session silently
