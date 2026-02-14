@@ -1,16 +1,81 @@
-# React + Vite
+# ExpertPM — Експертна система управління ІТ-проєктами
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Інтелектуальна система підтримки прийняття рішень для менеджерів ІТ-проєктів. Аналізує параметри проєкту та рекомендує оптимальні стратегії управління на основі бази знань.
 
-Currently, two official plugins are available:
+## Технології
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Шар | Технологія |
+|-----|------------|
+| Frontend | React 19, Vite 7 |
+| Backend / БД | Supabase (PostgreSQL, Auth) |
+| i18n | i18next (🇺🇦 UK / 🇬🇧 EN) |
+| Деплой | Cloudflare Pages / GitHub Pages |
 
-## React Compiler
+## Механізми інференції
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Система використовує **три** механізми аналізу одночасно:
 
-## Expanding the ESLint configuration
+1. **Rule-Based Inference** — оцінює правила стратегій відповідно до параметрів проєкту
+2. **Case-Based Reasoning** — знаходить подібні проєкти в базі знань та витягує їх стратегії
+3. **Scenario Analysis** — моделює оптимістичний / реалістичний / песимістичний сценарії
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Швидкий старт
+
+```bash
+# Клонування
+git clone https://github.com/hrussttt-one/it-expert-system.git
+cd it-expert-system
+
+# Встановлення залежностей
+npm install
+
+# Налаштування (створити .env з Supabase credentials)
+cp .env.example .env
+# Заповнити VITE_SUPABASE_URL та VITE_SUPABASE_ANON_KEY
+
+# Запуск
+npm run dev
+```
+
+## Налаштування бази даних
+
+1. Створіть проєкт у [Supabase](https://supabase.com)
+2. Відкрийте **SQL Editor** і послідовно виконайте:
+   - `supabase/schema.sql` — створення таблиць
+   - `supabase/seed.sql` — наповнення бази знань (стратегії, правила, приклади проєктів)
+
+## Структура проєкту
+
+```
+src/
+├── components/       # UI-компоненти (Layout, ProtectedRoute, AdminRoute, LanguageSwitcher)
+├── contexts/         # AuthContext — глобальний стан авторизації
+├── i18n/             # Переклади (uk.json, en.json)
+├── lib/              # Supabase клієнт + Expert Engine (інференція)
+├── pages/            # Сторінки (Login, Dashboard, ProjectDetail, NewProject, Admin)
+├── App.jsx           # Маршрутизація
+├── main.jsx          # Точка входу
+└── index.css         # Стилі (Apple-inspired дизайн)
+
+supabase/
+├── schema.sql        # DDL: таблиці, RLS-політики, тригери
+└── seed.sql          # Дані бази знань: стратегії, правила, приклади
+```
+
+## Ролі
+
+| Роль | Можливості |
+|------|-----------|
+| **user** | Створення проєктів, запуск аналізу, перегляд рекомендацій |
+| **admin** | Все вище + панель адміністратора, створення користувачів, перегляд усіх проєктів |
+
+## Змінні середовища
+
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+## Ліцензія
+
+MIT
