@@ -1,0 +1,152 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "newProject": "New Project",
+    "admin": "Admin Panel",
+    "logout": "Log Out",
+    "language": "Language"
+  },
+  "auth": {
+    "title": "Sign In",
+    "subtitle": "IT Project Management Expert System",
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign In",
+    "error": "Invalid email or password",
+    "loading": "Signing in..."
+  },
+  "dashboard": {
+    "title": "My Projects",
+    "subtitle": "Manage your IT projects and get expert recommendations",
+    "newProject": "New Project",
+    "noProjects": "No projects yet",
+    "noProjectsDesc": "Create your first project to get expert management recommendations.",
+    "created": "Created",
+    "status": "Status",
+    "complexity": "Complexity",
+    "team": "Team",
+    "budget": "Budget",
+    "viewAnalysis": "View Analysis",
+    "deleteConfirm": "Are you sure you want to delete this project?"
+  },
+  "project": {
+    "title": "New Project",
+    "editTitle": "Edit Project",
+    "subtitle": "Enter the project parameters for expert analysis",
+    "name": "Project Name",
+    "namePlaceholder": "e.g., CRM System Migration",
+    "description": "Description",
+    "descriptionPlaceholder": "Briefly describe the project goals and scope",
+    "teamSize": "Team Size",
+    "budget": "Budget (USD)",
+    "duration": "Duration (months)",
+    "complexity": "Complexity",
+    "projectType": "Project Type",
+    "riskLevel": "Risk Level",
+    "teamExperience": "Team Experience",
+    "clientInvolvement": "Client Involvement",
+    "requirementsStability": "Requirements Stability",
+    "techStackNovelty": "Technology Novelty",
+    "save": "Save & Analyze",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "types": {
+      "development": "Development",
+      "support": "Support",
+      "migration": "Migration",
+      "integration": "Integration",
+      "research": "Research"
+    },
+    "complexityLevels": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "riskLevels": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "experienceLevels": {
+      "junior": "Junior",
+      "mixed": "Mixed",
+      "senior": "Senior",
+      "expert": "Expert"
+    },
+    "clientLevels": {
+      "minimal": "Minimal",
+      "moderate": "Moderate",
+      "active": "Active",
+      "embedded": "Embedded"
+    },
+    "stabilityLevels": {
+      "stable": "Stable",
+      "evolving": "Evolving",
+      "volatile": "Volatile"
+    },
+    "noveltyLevels": {
+      "established": "Established",
+      "moderate": "Moderate",
+      "cutting_edge": "Cutting Edge"
+    }
+  },
+  "analysis": {
+    "title": "Project Analysis",
+    "subtitle": "Expert system recommendations for your project",
+    "parameters": "Project Parameters",
+    "recommended": "Recommended Strategies",
+    "matchScore": "Match Score",
+    "scenarios": "Scenario Analysis",
+    "optimistic": "Optimistic",
+    "realistic": "Realistic",
+    "pessimistic": "Pessimistic",
+    "reasoning": "Reasoning",
+    "similarProjects": "Similar Projects in Knowledge Base",
+    "similarity": "Similarity",
+    "strategy": "Strategy Used",
+    "outcome": "Outcome",
+    "reanalyze": "Re-analyze",
+    "back": "Back to Dashboard",
+    "analyzing": "Analyzing...",
+    "runAnalysis": "Run Expert Analysis",
+    "noAnalysis": "No analysis has been run yet. Click the button below to get expert recommendations.",
+    "bestMatch": "Best Match",
+    "details": "Details",
+    "risk": "Risk Assessment",
+    "timeline": "Timeline Impact",
+    "budgetImpact": "Budget Impact",
+    "successRate": "Success Probability",
+    "keyFactors": "Key Decision Factors"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "subtitle": "Manage system users",
+    "users": "Users",
+    "email": "Email",
+    "name": "Full Name",
+    "role": "Role",
+    "created": "Created",
+    "actions": "Actions",
+    "addUser": "Add User",
+    "addUserTitle": "Create New User",
+    "password": "Password",
+    "confirmDelete": "Are you sure you want to delete this user?",
+    "save": "Create",
+    "cancel": "Cancel",
+    "roleAdmin": "Admin",
+    "roleUser": "User"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "people": "people",
+    "months": "months"
+  }
+}
