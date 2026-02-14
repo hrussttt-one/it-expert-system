@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createClient } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import Layout from '../components/Layout';
 
