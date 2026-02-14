@@ -33,7 +33,7 @@ export default function ProjectDetailPage() {
             .eq('project_id', id)
             .order('created_at', { ascending: false })
             .limit(1)
-            .single();
+            .maybeSingle();
 
         if (saved?.result) {
             setAnalysis(typeof saved.result === 'string' ? JSON.parse(saved.result) : saved.result);
@@ -264,7 +264,7 @@ export default function ProjectDetailPage() {
                                         <div className="progress-bar" style={{ marginTop: 6 }}>
                                             <div
                                                 className={`progress-fill ${strategy.scenarios?.realistic?.successRate >= 70 ? 'success' :
-                                                        strategy.scenarios?.realistic?.successRate >= 40 ? 'warning' : 'danger'
+                                                    strategy.scenarios?.realistic?.successRate >= 40 ? 'warning' : 'danger'
                                                     }`}
                                                 style={{ width: `${strategy.scenarios?.realistic?.successRate}%` }}
                                             />
