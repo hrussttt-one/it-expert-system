@@ -1121,8 +1121,8 @@ body {
 
   /* Smaller language buttons in mobile */
   .header-nav .lang-btn {
-    padding: 2px 6px;
-    font-size: 0.7rem;
+    padding: 4px 12px;
+    font-size: 0.875rem;
   }
 
   /* Prevent gray background on language switcher container */
