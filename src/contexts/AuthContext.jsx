@@ -53,7 +53,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     mountedRef.current = true;
-    profileCacheRef.current = null; // Clear cache on mount to prevent stale data
 
     const initAuth = async () => {
       try {
@@ -63,30 +62,25 @@ export function AuthProvider({ children }) {
 
         if (error || !session?.user) {
           // No valid session — clear everything and go to login
-          clearSession();
+          setUser(null);
+          setProfile(null);
           setLoading(false);
           return;
         }
 
-        // Session exists — verify it's still valid by fetching profile FIRST
-        const profileOk = await fetchProfile(session.user.id);
+        // Session exists — set user immediately
+        setUser(session.user);
+
+        // Try to fetch profile, but don't fail if it doesn't work
+        await fetchProfile(session.user.id);
 
         if (!mountedRef.current) return;
-
-        if (!profileOk) {
-          // Profile fetch failed — session is invalid
-          clearSession();
-          setLoading(false);
-          return;
-        }
-
-        // Only set user if profile loaded successfully
-        setUser(session.user);
         setLoading(false);
       } catch {
         // Auth init failed — clear session silently
         if (mountedRef.current) {
-          clearSession();
+          setUser(null);
+          setProfile(null);
           setLoading(false);
         }
       }
@@ -109,16 +103,9 @@ export function AuthProvider({ children }) {
         }
 
         if (session?.user) {
-          const profileOk = await fetchProfile(session.user.id);
-          if (!mountedRef.current) return;
-
-          if (!profileOk) {
-            clearSession();
-            setLoading(false);
-            return;
-          }
-
           setUser(session.user);
+          await fetchProfile(session.user.id);
+          if (!mountedRef.current) return;
           setLoading(false);
         }
       }
