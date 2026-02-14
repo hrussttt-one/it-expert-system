@@ -946,13 +946,19 @@ body {
 }
 
 /* ============ RESPONSIVE ============ */
+
+/* Tablet and below */
 @media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+
   .header-inner {
     gap: 12px;
   }
 
   .header-nav {
-    gap: 2px;
+    gap: 4px;
   }
 
   .header-nav a,
@@ -967,6 +973,10 @@ body {
 
   .page-header h1 {
     font-size: 1.5rem;
+  }
+
+  .page-header p {
+    font-size: 0.875rem;
   }
 
   .form-grid {
@@ -993,6 +1003,156 @@ body {
   .project-actions {
     width: 100%;
     justify-content: flex-end;
+  }
+
+  /* Admin table - convert to card layout */
+  .admin-table {
+    display: block;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tbody {
+    display: block;
+  }
+
+  .admin-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+  }
+
+  .admin-table td {
+    display: block;
+    text-align: left;
+    padding: 0.5rem 0;
+    border: none;
+  }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .admin-table td:last-child {
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    margin-top: 0.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .header-logo {
+    font-size: 0.875rem;
+  }
+
+  .header-nav {
+    flex-wrap: wrap;
+  }
+
+  .welcome-banner {
+    font-size: 1.125rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .toolbar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .modal {
+    width: 95%;
+    max-width: none;
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+
+  .modal h2 {
+    font-size: 1.25rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .btn {
+    min-height: 44px;
+    /* Better touch target */
+  }
+
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Project cards */
+  .project-card {
+    padding: 1rem;
+  }
+
+  .project-meta {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Strategy cards */
+  .strategy-card {
+    padding: 1.25rem;
+  }
+
+  .strategy-header h3 {
+    font-size: 1rem;
+  }
+
+  /* Empty states */
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.125rem;
+  }
+
+  /* Login page */
+  .login-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .login-form h1 {
+    font-size: 1.5rem;
   }
 }
 

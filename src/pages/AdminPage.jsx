@@ -197,15 +197,15 @@ export default function AdminPage() {
                         <tbody>
                             {users.map(userRow => (
                                 <tr key={userRow.id}>
-                                    <td>{userRow.email}</td>
-                                    <td>{userRow.full_name || '—'}</td>
-                                    <td>
+                                    <td data-label={t('admin.email')}>{userRow.email}</td>
+                                    <td data-label={t('admin.name')}>{userRow.full_name || '—'}</td>
+                                    <td data-label={t('admin.role')}>
                                         <span className={`role-badge ${userRow.role === 'admin' ? 'role-admin' : 'role-user'}`}>
                                             {userRow.role === 'admin' ? t('admin.roleAdmin') : t('admin.roleUser')}
                                         </span>
                                     </td>
-                                    <td>{formatDate(userRow.created_at)}</td>
-                                    <td>
+                                    <td data-label={t('admin.created')}>{formatDate(userRow.created_at)}</td>
+                                    <td data-label={t('admin.actions')}>
                                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                                             <button
                                                 className="btn-icon"
