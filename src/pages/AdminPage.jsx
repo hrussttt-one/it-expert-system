@@ -9,6 +9,7 @@ export default function AdminPage() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [editingUser, setEditingUser] = useState(null);
     const [newUser, setNewUser] = useState({ email: '', password: '', full_name: '', role: 'user' });
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
@@ -32,6 +33,31 @@ export default function AdminPage() {
         e.preventDefault();
         setSaving(true);
         setError('');
+
+        // If editing, just update the profile
+        if (editingUser) {
+            try {
+                const { error } = await supabase
+                    .from('profiles')
+                    .update({
+                        full_name: newUser.full_name,
+                        role: newUser.role,
+                    })
+                    .eq('id', editingUser.id);
+
+                if (error) throw error;
+
+                setShowModal(false);
+                setEditingUser(null);
+                setNewUser({ email: '', password: '', full_name: '', role: 'user' });
+                setSaving(false);
+                fetchUsers();
+            } catch (err) {
+                setError(err.message);
+                setSaving(false);
+            }
+            return;
+        }
 
         // Create a temporary client to avoid logging out the admin
         // We MUST use a custom storage to prevent overwriting the main client's session in localStorage
@@ -94,6 +120,34 @@ export default function AdminPage() {
         fetchUsers();
     };
 
+    const handleEditUser = (userRow) => {
+        setEditingUser(userRow);
+        setNewUser({
+            email: userRow.email,
+            password: '',
+            full_name: userRow.full_name || '',
+            role: userRow.role
+        });
+        setShowModal(true);
+    };
+
+    const handleDeleteUser = async (userRow) => {
+        if (!confirm(t('admin.confirmDelete'))) return;
+
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .delete()
+                .eq('id', userRow.id);
+
+            if (error) throw error;
+
+            fetchUsers();
+        } catch (err) {
+            alert('Error deleting user: ' + err.message);
+        }
+    };
+
     const copyToClipboard = () => {
         const text = `Email: ${createdCredentials.email}\nPassword: ${createdCredentials.password}`;
         navigator.clipboard.writeText(text);
@@ -137,19 +191,42 @@ export default function AdminPage() {
                                 <th>{t('admin.name')}</th>
                                 <th>{t('admin.role')}</th>
                                 <th>{t('admin.created')}</th>
+                                <th>{t('admin.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => (
-                                <tr key={user.id}>
-                                    <td>{user.email}</td>
-                                    <td>{user.full_name || '—'}</td>
+                            {users.map(userRow => (
+                                <tr key={userRow.id}>
+                                    <td>{userRow.email}</td>
+                                    <td>{userRow.full_name || '—'}</td>
                                     <td>
-                                        <span className={`role-badge ${user.role === 'admin' ? 'role-admin' : 'role-user'}`}>
-                                            {user.role === 'admin' ? t('admin.roleAdmin') : t('admin.roleUser')}
+                                        <span className={`role-badge ${userRow.role === 'admin' ? 'role-admin' : 'role-user'}`}>
+                                            {userRow.role === 'admin' ? t('admin.roleAdmin') : t('admin.roleUser')}
                                         </span>
                                     </td>
-                                    <td>{formatDate(user.created_at)}</td>
+                                    <td>{formatDate(userRow.created_at)}</td>
+                                    <td>
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                className="btn-icon"
+                                                onClick={() => handleEditUser(userRow)}
+                                                title={t('common.edit')}
+                                            >
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M11 2L14 5L5 14H2V11L11 2Z" />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                className="btn-icon btn-danger"
+                                                onClick={() => handleDeleteUser(userRow)}
+                                                title={t('common.delete')}
+                                            >
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M3 4H13M5 4V3C5 2.44772 5.44772 2 6 2H10C10.5523 2 11 2.44772 11 3V4M12 4V13C12 13.5523 11.5523 14 11 14H5C4.44772 14 4 13.5523 4 13V4H12Z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -157,11 +234,11 @@ export default function AdminPage() {
                 )}
             </div>
 
-            {/* Add User Modal */}
+            {/* Add/Edit User Modal */}
             {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
+                <div className="modal-overlay" onClick={() => { setShowModal(false); setEditingUser(null); }}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
-                        <h2>{t('admin.addUserTitle')}</h2>
+                        <h2>{editingUser ? t('admin.editUserTitle') : t('admin.addUserTitle')}</h2>
                         {error && <div className="login-error">{error}</div>}
                         <form onSubmit={handleAddUser}>
                             <div className="form-group">
@@ -172,19 +249,22 @@ export default function AdminPage() {
                                     value={newUser.email}
                                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                                     required
+                                    disabled={editingUser !== null}
                                 />
                             </div>
-                            <div className="form-group">
-                                <label className="form-label">{t('admin.password')}</label>
-                                <input
-                                    type="password"
-                                    className="form-input"
-                                    value={newUser.password}
-                                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                                    required
-                                    minLength={6}
-                                />
-                            </div>
+                            {!editingUser && (
+                                <div className="form-group">
+                                    <label className="form-label">{t('admin.password')}</label>
+                                    <input
+                                        type="password"
+                                        className="form-input"
+                                        value={newUser.password}
+                                        onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                                        required
+                                        minLength={6}
+                                    />
+                                </div>
+                            )}
                             <div className="form-group">
                                 <label className="form-label">{t('admin.name')}</label>
                                 <input

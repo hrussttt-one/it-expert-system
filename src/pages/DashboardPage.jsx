@@ -63,6 +63,17 @@ export default function DashboardPage() {
 
     return (
         <Layout>
+            {profile && (
+                <div style={{
+                    padding: '2rem 0 1rem',
+                    fontSize: '1.5rem',
+                    fontWeight: '600',
+                    color: 'var(--text-primary)'
+                }}>
+                    {t('dashboard.welcome', { name: profile.full_name || user?.email })}
+                </div>
+            )}
+
             <div className="page-header">
                 <div className="toolbar">
                     <div>
