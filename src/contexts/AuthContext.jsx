@@ -40,15 +40,13 @@ export function AuthProvider({ children }) {
         .maybeSingle();
 
       if (error) {
-        console.error('Profile fetch error (likely expired session):', error.message);
         return false;
       }
 
       profileCacheRef.current = data;
       setProfile(data);
       return true;
-    } catch (error) {
-      console.error('Profile fetch exception:', error);
+    } catch {
       return false;
     }
   }, []);
@@ -76,14 +74,12 @@ export function AuthProvider({ children }) {
         if (!mountedRef.current) return;
 
         if (!profileOk) {
-          // Session token is expired/invalid — profile fetch failed
-          console.warn('Session appears expired, clearing auth state');
           clearSession();
         }
 
         setLoading(false);
-      } catch (err) {
-        console.error('Auth init error:', err);
+      } catch {
+        // Auth init failed — clear session silently
         if (mountedRef.current) {
           clearSession();
           setLoading(false);
@@ -102,8 +98,6 @@ export function AuthProvider({ children }) {
         }
 
         if (event === 'TOKEN_REFRESHED' && !session) {
-          // Token refresh failed — force logout
-          console.warn('Token refresh failed, clearing session');
           clearSession();
           setLoading(false);
           return;
@@ -115,7 +109,6 @@ export function AuthProvider({ children }) {
           if (!mountedRef.current) return;
 
           if (!profileOk) {
-            console.warn('Profile fetch failed after auth change, clearing session');
             clearSession();
           }
           setLoading(false);
@@ -125,10 +118,8 @@ export function AuthProvider({ children }) {
 
     initAuth();
 
-    // Safety timeout — if loading takes more than 5s, something is wrong
     const timeout = setTimeout(() => {
       if (mountedRef.current && loading) {
-        console.warn('Auth loading timeout — forcing ready state');
         setLoading(false);
       }
     }, 5000);
@@ -150,9 +141,8 @@ export function AuthProvider({ children }) {
   const signOut = useCallback(async () => {
     try {
       await supabase.auth.signOut();
-    } catch (e) {
+    } catch {
       // signOut can fail if session is already expired — that's OK
-      console.warn('signOut error (safe to ignore):', e.message);
     }
     clearSession();
   }, [clearSession]);

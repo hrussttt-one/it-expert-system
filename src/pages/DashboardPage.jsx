@@ -33,8 +33,7 @@ export default function DashboardPage() {
             const { data, error } = await query;
             if (error) throw error;
             setProjects(data || []);
-        } catch (err) {
-            console.error('Error fetching projects:', err);
+        } catch {
         } finally {
             setLoading(false);
         }

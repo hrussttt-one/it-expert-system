@@ -13,6 +13,8 @@ i18n.use(initReactI18next).init({
     interpolation: {
         escapeValue: false,
     },
+    saveMissing: false,
+    missingKeyHandler: false,
 });
 
 export default i18n;
