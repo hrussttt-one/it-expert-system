@@ -7,42 +7,30 @@ import Layout from '../components/Layout';
 
 export default function DashboardPage() {
     const { t } = useTranslation();
-    const { user } = useAuth();
+    const { user, profile } = useAuth();
     const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchProjects();
-    }, [user]);
+        if (user) {
+            fetchProjects();
+        }
+    }, [user, profile]);
 
     const fetchProjects = async () => {
-        if (!user) return;
-
         try {
-            // Check if user is admin via profile
-            // Note: Since RLS is disabled, we must manually filter for non-admins
-            const { data: userProfile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('id', user.id)
-                .maybeSingle();
-
-            if (profileError) {
-                console.error('Profile fetch error:', profileError);
-            }
-
+            setLoading(true);
             let query = supabase
                 .from('projects')
-                .select('*') // Join not strictly needed unless we display owner info
+                .select('*')
                 .order('created_at', { ascending: false });
 
-            if (userProfile?.role !== 'admin') {
+            if (profile?.role !== 'admin') {
                 query = query.eq('user_id', user.id);
             }
 
             const { data, error } = await query;
-
             if (error) throw error;
             setProjects(data || []);
         } catch (err) {
