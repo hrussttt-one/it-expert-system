@@ -197,7 +197,7 @@ body {
 .lang-btn {
   font-size: 0.75rem;
   font-weight: 500;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border: none;
   background: none;
   border-radius: var(--radius-full);
