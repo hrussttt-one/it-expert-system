@@ -136,7 +136,11 @@
     "save": "Create",
     "cancel": "Cancel",
     "roleAdmin": "Admin",
-    "roleUser": "User"
+    "roleUser": "User",
+    "credentialsTitle": "User Created",
+    "credentialsSubtitle": "Copy these credentials to share with the new user. They will not be shown again.",
+    "copy": "Copy Credentials",
+    "copied": "Copied to clipboard"
   },
   "common": {
     "loading": "Loading...",
@@ -146,6 +150,7 @@
     "edit": "Edit",
     "save": "Save",
     "cancel": "Cancel",
+    "close": "Close",
     "people": "people",
     "months": "months"
   }

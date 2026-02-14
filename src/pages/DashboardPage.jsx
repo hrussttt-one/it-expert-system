@@ -18,11 +18,25 @@ export default function DashboardPage() {
 
     const fetchProjects = async () => {
         if (!user) return;
-        const { data } = await supabase
+
+        // Check if user is admin via profile
+        // Note: Since RLS is disabled, we must manually filter for non-admins
+        const { data: userProfile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+        let query = supabase
             .from('projects')
             .select('*')
-            .eq('user_id', user.id)
             .order('created_at', { ascending: false });
+
+        if (userProfile?.role !== 'admin') {
+            query = query.eq('user_id', user.id);
+        }
+
+        const { data } = await query;
         setProjects(data || []);
         setLoading(false);
     };

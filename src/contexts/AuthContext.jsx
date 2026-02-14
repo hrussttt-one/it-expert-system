@@ -29,19 +29,31 @@ export function AuthProvider({ children }) {
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            async (_event, session) => {
-                setUser(session?.user ?? null);
-                if (session?.user) {
-                    await fetchProfile(session.user.id);
-                } else {
-                    setProfile(null);
-                }
-                setLoading(false);
-            }
-        );
+      async (_event, session) => {
+        if (_event === 'SIGNED_OUT') {
+          setUser(null);
+          setProfile(null);
+          setLoading(false);
+        } else if (session?.user) {
+          setUser(session.user);
+          await fetchProfile(session.user.id);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      }
+    );
 
-        return () => subscription.unsubscribe();
-    }, []);
+    // Safety timeout
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, []);
 
     const signIn = async (email, password) => {
         const { data, error } = await supabase.auth.signInWithPassword({

@@ -12,6 +12,8 @@ export default function AdminPage() {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
 
+    const [createdCredentials, setCreatedCredentials] = useState(null);
+
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -30,8 +32,21 @@ export default function AdminPage() {
         setSaving(true);
         setError('');
 
-        // Sign up the user via Supabase Auth
-        const { data, error: authError } = await supabase.auth.signUp({
+        // Create a temporary client to avoid logging out the admin
+        const tempClient = createClient(
+            import.meta.env.VITE_SUPABASE_URL,
+            import.meta.env.VITE_SUPABASE_ANON_KEY,
+            {
+                auth: {
+                    persistSession: false,
+                    autoRefreshToken: false,
+                    detectSessionInUrl: false
+                }
+            }
+        );
+
+        // Sign up the user via temp client
+        const { data, error: authError } = await tempClient.auth.signUp({
             email: newUser.email,
             password: newUser.password,
             options: {
@@ -48,7 +63,7 @@ export default function AdminPage() {
             return;
         }
 
-        // Update profile role
+        // Update profile role manually if needed (although trigger might handle it, we want to be sure)
         if (data?.user) {
             await supabase
                 .from('profiles')
@@ -60,10 +75,22 @@ export default function AdminPage() {
                 });
         }
 
+        // Show credentials modal
+        setCreatedCredentials({
+            email: newUser.email,
+            password: newUser.password
+        });
+
         setShowModal(false);
         setNewUser({ email: '', password: '', full_name: '', role: 'user' });
         setSaving(false);
         fetchUsers();
+    };
+
+    const copyToClipboard = () => {
+        const text = `Email: ${createdCredentials.email}\nPassword: ${createdCredentials.password}`;
+        navigator.clipboard.writeText(text);
+        alert(t('admin.copied'));
     };
 
     const formatDate = (date) => {
@@ -123,6 +150,7 @@ export default function AdminPage() {
                 )}
             </div>
 
+            {/* Add User Modal */}
             {showModal && (
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -179,6 +207,36 @@ export default function AdminPage() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Credentials Modal */}
+            {createdCredentials && (
+                <div className="modal-overlay">
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <h2>{t('admin.credentialsTitle')}</h2>
+                        <p style={{ marginBottom: '1rem', color: '#666' }}>
+                            {t('admin.credentialsSubtitle')}
+                        </p>
+
+                        <div className="credentials-box" style={{ background: '#f5f5f7', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                            <div style={{ marginBottom: '0.5rem' }}>
+                                <strong>{t('admin.email')}:</strong> {createdCredentials.email}
+                            </div>
+                            <div>
+                                <strong>{t('admin.password')}:</strong> {createdCredentials.password}
+                            </div>
+                        </div>
+
+                        <div className="form-actions">
+                            <button type="button" className="btn btn-primary" onClick={copyToClipboard}>
+                                {t('admin.copy')}
+                            </button>
+                            <button type="button" className="btn btn-secondary" onClick={() => setCreatedCredentials(null)}>
+                                {t('common.close')}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
