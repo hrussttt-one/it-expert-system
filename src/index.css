@@ -1081,8 +1081,8 @@ body {
     border-bottom: 1px solid var(--color-border);
     flex-direction: column;
     align-items: stretch;
-    gap: 0;
-    padding: 8px;
+    gap: 4px;
+    padding: 12px;
     display: none;
     box-shadow: var(--shadow-md);
   }
@@ -1098,6 +1098,7 @@ body {
     text-align: left;
     justify-content: flex-start;
     border-radius: var(--radius-md);
+    margin: 0;
   }
 
   .add-project-btn {
