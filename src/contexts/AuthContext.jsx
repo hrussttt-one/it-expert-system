@@ -17,7 +17,12 @@ export function AuthProvider({ children }) {
         .select('*')
         .eq('id', userId)
         .maybeSingle();
-      setProfile(data);
+
+      setProfile(prev => {
+        // Deep compare profile data to avoid identity-based re-render loops
+        if (JSON.stringify(prev) === JSON.stringify(data)) return prev;
+        return data;
+      });
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
@@ -29,9 +34,12 @@ export function AuthProvider({ children }) {
     const initAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (mounted) {
-        setUser(session?.user ?? null);
         if (session?.user) {
+          setUser(prev => (prev?.id === session.user.id ? prev : session.user));
           await fetchProfile(session.user.id);
+        } else {
+          setUser(null);
+          setProfile(null);
         }
         setLoading(false);
       }
@@ -46,7 +54,7 @@ export function AuthProvider({ children }) {
           setProfile(null);
           setLoading(false);
         } else if (session?.user) {
-          setUser(session.user);
+          setUser(prev => (prev?.id === session.user.id ? prev : session.user));
           await fetchProfile(session.user.id);
           setLoading(false);
         } else {
@@ -59,7 +67,7 @@ export function AuthProvider({ children }) {
 
     const timeout = setTimeout(() => {
       if (mounted) setLoading(false);
-    }, 3000);
+    }, 4000); // Slightly longer safety timeout
 
     return () => {
       mounted = false;
