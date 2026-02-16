@@ -124,6 +124,9 @@ export default function ProjectDetailPage() {
                             </svg>
                             {t('analysis.back')}
                         </button>
+                        <button className="btn btn-secondary" onClick={() => navigate(`/projects/${id}/forecast`)}>
+                            📈 {t('project.forecast')}
+                        </button>
                         <button
                             className="btn btn-primary"
                             onClick={handleAnalyze}

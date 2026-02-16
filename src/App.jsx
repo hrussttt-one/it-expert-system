@@ -9,6 +9,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage';
 import KnowledgeBasePage from './pages/KnowledgeBasePage';
 import AdminPage from './pages/AdminPage';
 import GuidePage from './pages/GuidePage';
+import ForecastPage from './pages/ForecastPage';
 
 export default function App() {
   return (
@@ -37,6 +38,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ProjectDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/projects/:id/forecast"
+            element={
+              <ProtectedRoute>
+                <ForecastPage />
               </ProtectedRoute>
             }
           />
