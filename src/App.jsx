@@ -8,6 +8,7 @@ import NewProjectPage from './pages/NewProjectPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
 import KnowledgeBasePage from './pages/KnowledgeBasePage';
 import AdminPage from './pages/AdminPage';
+import GuidePage from './pages/GuidePage';
 
 export default function App() {
   return (
@@ -53,6 +54,14 @@ export default function App() {
               <AdminRoute>
                 <AdminPage />
               </AdminRoute>
+            }
+          />
+          <Route
+            path="/guide"
+            element={
+              <ProtectedRoute>
+                <GuidePage />
+              </ProtectedRoute>
             }
           />
           <Route path="*" element={<Navigate to="/" replace />} />

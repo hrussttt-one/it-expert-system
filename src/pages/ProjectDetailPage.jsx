@@ -119,6 +119,9 @@ export default function ProjectDetailPage() {
                     </div>
                     <div style={{ display: 'flex', gap: 8 }}>
                         <button className="btn btn-secondary" onClick={() => navigate('/')}>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                                <path d="M12 8H4M4 8l4-4M4 8l4 4" />
+                            </svg>
                             {t('analysis.back')}
                         </button>
                         <button
@@ -126,6 +129,9 @@ export default function ProjectDetailPage() {
                             onClick={handleAnalyze}
                             disabled={analyzing}
                         >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" transform="scale(0.65) translate(1, 1)" />
+                            </svg>
                             {analyzing ? t('analysis.analyzing') : (analysis ? t('analysis.reanalyze') : t('analysis.runAnalysis'))}
                         </button>
                     </div>
@@ -137,7 +143,7 @@ export default function ProjectDetailPage() {
                 <div className="analysis-section-title">{t('analysis.parameters')}</div>
                 <div className="card">
                     {project.description && (
-                        <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', marginBottom: 16 }}>
+                        <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', marginBottom: 16, lineHeight: 1.6 }}>
                             {project.description}
                         </p>
                     )}
@@ -196,8 +202,16 @@ export default function ProjectDetailPage() {
 
             {!analysis && !analyzing && (
                 <div className="no-analysis animate-in">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-primary-light)', marginBottom: 16 }}>
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
                     <p>{t('analysis.noAnalysis')}</p>
                     <button className="btn btn-primary btn-lg" onClick={handleAnalyze}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                        </svg>
                         {t('analysis.runAnalysis')}
                     </button>
                 </div>
@@ -230,6 +244,7 @@ export default function ProjectDetailPage() {
                             <div
                                 key={strategy.id}
                                 className={`strategy-card animate-in ${idx === 0 ? 'best-match' : ''}`}
+                                style={{ animationDelay: `${0.1 * idx}s` }}
                             >
                                 <div className="strategy-header">
                                     <div>
@@ -239,7 +254,7 @@ export default function ProjectDetailPage() {
                                                     className="badge badge-medium"
                                                     style={{ marginRight: 8, fontSize: '0.625rem' }}
                                                 >
-                                                    {t('analysis.bestMatch')}
+                                                    ⭐ {t('analysis.bestMatch')}
                                                 </span>
                                             )}
                                             {strategy.name}
@@ -261,7 +276,7 @@ export default function ProjectDetailPage() {
                                         <div className="strategy-detail-value">
                                             {strategy.scenarios?.realistic?.successRate}%
                                         </div>
-                                        <div className="progress-bar" style={{ marginTop: 6 }}>
+                                        <div className="progress-bar" style={{ marginTop: 8 }}>
                                             <div
                                                 className={`progress-fill ${strategy.scenarios?.realistic?.successRate >= 70 ? 'success' :
                                                     strategy.scenarios?.realistic?.successRate >= 40 ? 'warning' : 'danger'
@@ -304,15 +319,16 @@ export default function ProjectDetailPage() {
 
                                 {/* Reasoning */}
                                 {strategy.reasoning?.length > 0 && (
-                                    <div style={{ marginTop: 16 }}>
-                                        <div className="strategy-detail-label" style={{ marginBottom: 8 }}>
+                                    <div style={{ marginTop: 20 }}>
+                                        <div className="strategy-detail-label" style={{ marginBottom: 10 }}>
                                             {t('analysis.reasoning')}
                                         </div>
                                         <ul style={{
-                                            fontSize: '0.8125rem',
+                                            fontSize: '0.875rem',
                                             color: 'var(--color-text-secondary)',
-                                            paddingLeft: 16,
+                                            paddingLeft: 18,
                                             listStyle: 'disc',
+                                            lineHeight: 1.7,
                                         }}>
                                             {strategy.reasoning.map((r, i) => (
                                                 <li key={i} style={{ marginBottom: 4 }}>{r}</li>

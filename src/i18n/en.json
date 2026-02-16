@@ -5,7 +5,8 @@
     "admin": "Users",
     "knowledge": "Knowledge Base",
     "logout": "Log Out",
-    "language": "Language"
+    "language": "Language",
+    "guide": "Guide"
   },
   "auth": {
     "title": "Sign In",
@@ -29,7 +30,11 @@
     "team": "Team",
     "budget": "Budget",
     "viewAnalysis": "View Analysis",
-    "deleteConfirm": "Are you sure you want to delete this project?"
+    "deleteConfirm": "Are you sure you want to delete this project?",
+    "totalProjects": "Projects",
+    "totalBudget": "Total Budget",
+    "avgTeam": "Avg Team Size",
+    "highComplexity": "High Complexity"
   },
   "project": {
     "title": "New Project",
@@ -168,5 +173,105 @@
     "close": "Close",
     "people": "people",
     "months": "months"
+  },
+  "guide": {
+    "title": "User Guide",
+    "subtitle": "Learn how to effectively use the IT Project Management Expert System",
+    "createProject": {
+      "title": "How to Create a New Project",
+      "intro": "To get expert recommendations, you need to create a project and fill in its parameters.",
+      "step1Title": "Click the ＋ Button",
+      "step1": "In the top menu, click the purple ＋ button — it's always the first item in the navigation.",
+      "step2Title": "Fill Out the Form",
+      "step2": "Enter the project name, description, and all parameters: team size, budget, complexity, and more.",
+      "step3Title": "Save & Analyze",
+      "step3": "Click 'Save & Analyze' — the system will automatically run the expert analysis.",
+      "screenshotAlt": "New project creation form",
+      "screenshotCaption": "Project creation form with all parameters"
+    },
+    "dataUsed": {
+      "title": "What Data Is Used for Analysis",
+      "intro": "The system considers 10 key parameters of your project. Each parameter has its own weight in the final analysis.",
+      "weights": "The highest weights go to complexity (15%), project type (12%), and risk level (12%). Team size and experience also significantly influence the result.",
+      "params": {
+        "teamSize": {
+          "name": "Team Size",
+          "desc": "Number of people on the project (weight 10%)"
+        },
+        "budget": {
+          "name": "Budget",
+          "desc": "Total project budget in USD (weight 10%)"
+        },
+        "duration": {
+          "name": "Duration",
+          "desc": "Project duration in months (weight 8%)"
+        },
+        "complexity": {
+          "name": "Complexity",
+          "desc": "Low, medium, high, or critical (weight 15%)"
+        },
+        "projectType": {
+          "name": "Project Type",
+          "desc": "Development, support, migration, integration, research (weight 12%)"
+        },
+        "riskLevel": {
+          "name": "Risk Level",
+          "desc": "From low to critical (weight 12%)"
+        },
+        "teamExp": {
+          "name": "Team Experience",
+          "desc": "Junior, mixed, senior, expert (weight 10%)"
+        },
+        "clientInv": {
+          "name": "Client Involvement",
+          "desc": "Minimal, moderate, active, embedded (weight 8%)"
+        },
+        "reqStability": {
+          "name": "Requirements Stability",
+          "desc": "Stable, evolving, volatile (weight 8%)"
+        },
+        "techNovelty": {
+          "name": "Technology Novelty",
+          "desc": "Established, moderate, cutting edge (weight 7%)"
+        }
+      }
+    },
+    "howAnalysis": {
+      "title": "How Analysis Works",
+      "intro": "The system uses three inference mechanisms that work in parallel and complement each other.",
+      "ruleBased": {
+        "title": "Rule-Based Inference",
+        "desc": "A set of IF-THEN rules checks your project parameters and awards points to strategies that match the conditions. For example: if requirements are volatile and team is experienced → recommend Scrum."
+      },
+      "caseBased": {
+        "title": "Case-Based Reasoning (CBR)",
+        "desc": "The system finds similar projects in the knowledge base by comparing all 10 parameters. Strategies from successful similar projects receive bonus points."
+      },
+      "scenario": {
+        "title": "Scenario Analysis",
+        "desc": "For each strategy, 3 scenarios are modeled: optimistic, realistic, and pessimistic — with estimates of budget impact, timeline, and success probability."
+      },
+      "screenshotAlt": "Project analysis page",
+      "screenshotCaption": "Project parameters and key decision factors"
+    },
+    "responseFormed": {
+      "title": "How the Response Is Formed",
+      "intro": "The final score for each strategy is a weighted combination of scores from two main mechanisms.",
+      "step1Title": "Rule Score (50%)",
+      "step1": "Production rules check conditions and award points. The result is normalized to 50 points.",
+      "step2Title": "CBR Score (40%)",
+      "step2": "CBR finds similar projects and evaluates their strategies' success. A bonus is added for successful outcomes.",
+      "step3Title": "Success Bonus (+10%)",
+      "step3": "If a strategy was successful in similar projects, it receives an additional bonus.",
+      "step4Title": "Ranking & Recommendation",
+      "step4": "Strategies are sorted by total score. The best one gets the 'Best Match' label.",
+      "accuracyTitle": "Recommendation Accuracy",
+      "accuracyDesc": "Accuracy depends on several factors:",
+      "accuracyGood": "The more accurately parameters are filled — the better the recommendation",
+      "accuracyKB": "The more projects in the knowledge base — the more accurate CBR analysis",
+      "accuracyWarn": "The evaluation is advisory and does not replace professional manager experience",
+      "screenshotAlt": "Analysis results",
+      "screenshotCaption": "Recommended strategy with match percentage and scenario analysis"
+    }
   }
 }

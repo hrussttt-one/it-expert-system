@@ -30,7 +30,7 @@ export default function LoginPage() {
 
     return (
         <div className="login-page">
-            <div className="login-card">
+            <div className="login-card animate-in">
                 <div style={{ position: 'absolute', top: 24, right: 24 }}>
                     <LanguageSwitcher />
                 </div>
@@ -46,7 +46,13 @@ export default function LoginPage() {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label className="form-label">{t('auth.email')}</label>
+                        <label className="form-label">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                                <rect x="2" y="3" width="12" height="10" rx="2" />
+                                <path d="M2 5l6 4 6-4" />
+                            </svg>
+                            {t('auth.email')}
+                        </label>
                         <input
                             type="email"
                             className="form-input"
@@ -54,10 +60,17 @@ export default function LoginPage() {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                             autoComplete="email"
+                            placeholder="you@example.com"
                         />
                     </div>
                     <div className="form-group">
-                        <label className="form-label">{t('auth.password')}</label>
+                        <label className="form-label">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                                <rect x="3" y="7" width="10" height="7" rx="2" />
+                                <path d="M5 7V5a3 3 0 016 0v2" />
+                            </svg>
+                            {t('auth.password')}
+                        </label>
                         <input
                             type="password"
                             className="form-input"
@@ -65,10 +78,16 @@ export default function LoginPage() {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             autoComplete="current-password"
+                            placeholder="••••••••"
                         />
                     </div>
                     <button type="submit" className="btn btn-primary" disabled={loading}>
-                        {loading ? t('auth.loading') : t('auth.login')}
+                        {loading ? (
+                            <>
+                                <div className="loading-spinner" style={{ width: 16, height: 16, borderWidth: 2, borderTopColor: '#fff', borderColor: 'rgba(255,255,255,0.3)' }} />
+                                {t('auth.loading')}
+                            </>
+                        ) : t('auth.login')}
                     </button>
                 </form>
             </div>
