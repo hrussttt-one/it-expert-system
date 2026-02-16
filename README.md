@@ -334,7 +334,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 ## 📦 Версії
 
-- **v2.0-beta** — Бета-версія з модульом прогнозування (SMA, EMA, Holt's)
+- **v1.1-beta** — Бета-версія з модульом прогнозування (SMA, EMA, Holt's)
 - **v1.0-stable** — Стабільна версія з повним функціоналом
 - **GitHub**: [hrussttt-one/it-expert-system](https://github.com/hrussttt-one/it-expert-system)
 
